@@ -1,0 +1,5 @@
+#here I'm listing a sequence of commands that can be useful to manage the projects.
+
+#update an existing lambda function in aws
+aws lambda update-function-code --function-name sayhello --zip-file fileb://Desktop/Alexa/isds_bot/Archive.zip 
+
