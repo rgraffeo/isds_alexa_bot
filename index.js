@@ -56,7 +56,6 @@ var funfacts = {
     };
 
 
-
 /**
  * HelloWorld is a child of AlexaSkill.
  * To read more about inheritance in JavaScript, see the link below.
@@ -79,9 +78,18 @@ HelloWorld.prototype.eventHandlers.onSessionStarted = function (sessionStartedRe
 
 HelloWorld.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
     console.log("HelloWorld onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "Welcome to the Information Systems bot. I know a lot of interesting facts about  I.S.D.S students, courses, and professors. Which one would you like?";
-    var repromptText = "Come on ask me some questions.";
+    var speechOutput = "Hi! I'm the the I.S.D.S assistant. I'm here to help you. What's your name?";
+    var repromptText = "Sorry, I didn't catch that. Say, my name is";
+    
+    
+    var attributes = {
+            type: launchRequest.type
+        };
+    session.attributes = attributes;
+    
     response.ask(speechOutput, repromptText);
+    callback(session.attributes);
+
 };
 
 HelloWorld.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
@@ -94,7 +102,6 @@ HelloWorld.prototype.intentHandlers = {
     // register custom intent handlers
     "HelloWorldIntent": function (intent, session, response) {
         //var cat = intent.slots.category.value;
-        
         
         var sessionAttributes = session.attributes;
         //var cat = sessionAttributes.cat;
@@ -132,6 +139,21 @@ HelloWorld.prototype.intentHandlers = {
         } else {
             response.ask("You can ask me about students, professors, and courses. Which one do you like");
         }
+    },
+    "SpeechName": function(intent, session, response) {
+        var shouldEndSession = true;
+        var intent_value = intent.slots.name.value;
+        var session_type = session.attributes.type;
+
+
+        //if the previous interaction was launch the skill
+        if (intent_value && session_type == "LaunchRequest"){
+        var outputSpeech = "Hi " + intent_value + "!. You can ask me general info about the department, or you can ask for advice for selecting your courses"
+        response.ask(outputSpeech);
+        } else if (intent_value == undefined && session_type == "LaunchRequest"){
+        var outputSpeech = "Can you say that again? Say: my name is";
+        response.ask(outputSpeech);
+        }   
     },
     "AMAZON.HelpIntent": function (intent, session, response) {
         response.ask("Try asking me a fun fact about professors maybe?");
