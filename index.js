@@ -1,22 +1,4 @@
-/**
-    Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
-    Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
-
-        http://aws.amazon.com/apache2.0/
-
-    or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-
-/**
- * This simple sample has no external dependencies or session management, and shows the most basic
- * example of how to create a Lambda function for handling Alexa Skill requests.
- *
- * Examples:
- * One-shot model:
- *  User: "Alexa, tell Greeter to say hello"
- *  Alexa: "Hello World!"
- */
 
 /**
  * App ID for the skill
@@ -28,8 +10,10 @@ var APP_ID = undefined; //replace with "amzn1.echo-sdk-ams.app.[your-unique-valu
  */
 var AlexaSkill = require('./AlexaSkill');
 
+
 var random = 5.9;
 //var correctAnswerIndex =  Math.floor(Math.random() * (random));
+
 
 var funfacts = {
     students:   [
@@ -56,31 +40,25 @@ var funfacts = {
     };
 
 
-/**
- * HelloWorld is a child of AlexaSkill.
- * To read more about inheritance in JavaScript, see the link below.
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript#Inheritance
- */
-var HelloWorld = function () {
+
+var IsdsBot = function () {
     AlexaSkill.call(this, APP_ID);
 };
 
 // Extend AlexaSkill
-HelloWorld.prototype = Object.create(AlexaSkill.prototype);
-HelloWorld.prototype.constructor = HelloWorld;
+IsdsBot.prototype = Object.create(AlexaSkill.prototype);
+IsdsBot.prototype.constructor = IsdsBot;
 
-HelloWorld.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequest, session) {
-    console.log("HelloWorld onSessionStarted requestId: " + sessionStartedRequest.requestId
+IsdsBot.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequest, session) {
+    console.log("IsdsBot onSessionStarted requestId: " + sessionStartedRequest.requestId
         + ", sessionId: " + session.sessionId);
     // any initialization logic goes here
 };
 
-HelloWorld.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
-    console.log("HelloWorld onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
+IsdsBot.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
+    console.log("IsdsBot onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
     var speechOutput = "Hi! I'm the the I.S.D.S assistant. I'm here to help you. What's your name?";
     var repromptText = "Sorry, I didn't catch that. Say, my name is";
-    
     
     var attributes = {
             type: launchRequest.type
@@ -92,48 +70,51 @@ HelloWorld.prototype.eventHandlers.onLaunch = function (launchRequest, session, 
 
 };
 
-HelloWorld.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
-    console.log("HelloWorld onSessionEnded requestId: " + sessionEndedRequest.requestId
+IsdsBot.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
+    console.log("IsdsBot onSessionEnded requestId: " + sessionEndedRequest.requestId
         + ", sessionId: " + session.sessionId);
     // any cleanup logic goes here
 };
 
-HelloWorld.prototype.intentHandlers = {
+IsdsBot.prototype.intentHandlers = {
     // register custom intent handlers
-    "HelloWorldIntent": function (intent, session, response) {
-        //var cat = intent.slots.category.value;
+    "Facts": function (intent, session, response) {
         
+        //get the session attributes
         var sessionAttributes = session.attributes;
-        //var cat = sessionAttributes.cat;
+        
+        //get the value of the intent's slot
+        var fact_category = intent.slots.category.value
 
-        var cat = intent.slots.category.value
-
-        if (!cat) {var cat = getFunFactCat(intent,false)};
-        //var cat = getFunFactCat(intent,false);
+        //if (!fact_category) {var fact_category = getFunFactCat(intent,false)};
 
         var shouldEndSession = false;
+        var session_type = sessionAttributes.type;
         
-        if(cat){
-            if(cat == "random"){
+
+        if(fact_category){
+            if(fact_category == "random"){
                 var random2 = 2.9
                 var outputSpeech = funfacts[Object.keys(funfacts)[Math.floor(Math.random() * (random2))]][Math.floor(Math.random() * (random))];
-                //var outputSpeech = funfacts[cat][Math.floor(Math.random() * (random))];
+                //var outputSpeech = funfacts[fact_category][Math.floor(Math.random() * (random))];
                 var repromptText = "do you want to hear another random fact? You can also ask me about students,professors, and the department";
                 response.ask(outputSpeech,repromptText);    
-            } else if (cat =="professors" || cat == "students" || cat== "courses") {
-                var outputSpeech = funfacts[cat][Math.floor(Math.random() * (random))];
-                var repromptText = "do you want to hear another fact about"+ " " +cat;
+            } else if (fact_category =="professors" || fact_category == "students" || fact_category== "courses") {
+                var outputSpeech = funfacts[fact_category][Math.floor(Math.random() * (random))];
+                var repromptText = "do you want to hear another fact about"+ " " +fact_category;
                 
                 var persistent = {};
                 persistent = {
                     prompted: true,
-                    cat: cat};
+                    fact_category: fact_category};
                 session.attributes = persistent;
 
                 response.ask(outputSpeech,repromptText);
                 callback(session.attributes);
 
             } else {
+                var outputSpeech = "Do you want to hear a random or specific fact?";
+                var repromptText = "Say random or specific"
                 response.ask("You can ask me about students, professors, and courses. Which one do you like");
             }
         } else {
@@ -153,7 +134,10 @@ HelloWorld.prototype.intentHandlers = {
         } else if (intent_value == undefined && session_type == "LaunchRequest"){
         var outputSpeech = "Can you say that again? Say: my name is";
         response.ask(outputSpeech);
-        }   
+        }
+
+        session.attributes = {};
+        callback(session.attributes);
     },
     "AMAZON.HelpIntent": function (intent, session, response) {
         response.ask("Try asking me a fun fact about professors maybe?");
@@ -170,16 +154,18 @@ HelloWorld.prototype.intentHandlers = {
         var sessionAttributes = session.attributes;
         var cat = sessionAttributes.cat;
 
-        HelloWorldIntent(intent, session, response);
+        IsdsBotIntent(intent, session, response);
     }
 };
 
 // Create the handler that responds to the Alexa Request.
 exports.handler = function (event, context) {
-    // Create an instance of the HelloWorld skill.
-    var helloWorld = new HelloWorld();
-    helloWorld.execute(event, context);
+    // Create an instance of the IsdsBot skill.
+    var isdsbot = new IsdsBot();
+    isdsbot.execute(event, context);
 };
+
+
 
 // Create function to test the presence of the slot in the intent
 function getFunFactCat(intent,assignDefault) {
@@ -196,7 +182,7 @@ function getFunFactCat(intent,assignDefault) {
 };
 
 
-function HelloWorldIntent (intent, session, response) {
+function IsdsBotIntent (intent, session, response) {
         //var cat = intent.slots.category.value;
         
         
