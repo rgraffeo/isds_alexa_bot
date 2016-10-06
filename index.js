@@ -78,48 +78,58 @@ IsdsBot.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, 
 
 IsdsBot.prototype.intentHandlers = {
     // register custom intent handlers
+    "Consultant": function (intent, session, response) {
+        var sessionAttributes = session.attributes;
+
+        var outputSpeech = "Ok " ;
+        var repromptText = "";
+
+        response.ask(outputSpeech, repromptText);
+
+
+    },
     "Facts": function (intent, session, response) {
         
-        //get the session attributes
-        var sessionAttributes = session.attributes;
-        
         //get the value of the intent's slot
-        var fact_category = intent.slots.category.value
-
-        //if (!fact_category) {var fact_category = getFunFactCat(intent,false)};
+        var Fact_Category = session.attributes.Fact_Category;
+        if (!Fact_Category){
+            var Fact_Category = intent.slots.category.value;
+        }
 
         var shouldEndSession = false;
-        var session_type = sessionAttributes.type;
-        
+        //var session_type = sessionAttributes.type.Fact_Category;        
 
-        if(fact_category){
-            if(fact_category == "random"){
+        if(Fact_Category){
+            if(Fact_Category == "random"){
                 var random2 = 2.9
                 var outputSpeech = funfacts[Object.keys(funfacts)[Math.floor(Math.random() * (random2))]][Math.floor(Math.random() * (random))];
-                //var outputSpeech = funfacts[fact_category][Math.floor(Math.random() * (random))];
+                //var outputSpeech = funfacts[Fact_Category][Math.floor(Math.random() * (random))];
                 var repromptText = "do you want to hear another random fact? You can also ask me about students,professors, and the department";
                 response.ask(outputSpeech,repromptText);    
-            } else if (fact_category =="professors" || fact_category == "students" || fact_category== "courses") {
-                var outputSpeech = funfacts[fact_category][Math.floor(Math.random() * (random))];
-                var repromptText = "do you want to hear another fact about"+ " " +fact_category;
-                
-                var persistent = {};
-                persistent = {
-                    prompted: true,
-                    fact_category: fact_category};
-                session.attributes = persistent;
+            } else if (Fact_Category =="professors" || Fact_Category == "students" || Fact_Category== "courses") {
+                var outputSpeech = funfacts[Fact_Category][Math.floor(Math.random() * (random))];
+                var repromptText = "do you want to hear another fact about"+ " " + Fact_Category;
 
-                response.ask(outputSpeech,repromptText);
+                var session_attributes = {};
+                session_attributes = {
+                    Prompted: true,
+                    FactCategory: Fact_Category};
+                session.attributes = session_attributes;
+
+                response.ask(outputSpeech,repromptText);                
                 callback(session.attributes);
 
             } else {
-                var outputSpeech = "Do you want to hear a random or specific fact?";
-                var repromptText = "Say random or specific"
-                response.ask("You can ask me about students, professors, and courses. Which one do you like");
+                var outputSpeech = "You can ask me about students, professors, or courses";
+                var repromptText = "Ask me for a random fact if you prefer";
+                response.ask(outputSpeech,repromptText);
             }
         } else {
-            response.ask("You can ask me about students, professors, and courses. Which one do you like");
+            var outputSpeech = "You can ask me about students, professors, or courses";
+            var repromptText = "Ask me for a random fact if you prefer";
+            response.ask(outputSpeech,repromptText);
         }
+        
     },
     "SpeechName": function(intent, session, response) {
         var shouldEndSession = true;
@@ -136,7 +146,7 @@ IsdsBot.prototype.intentHandlers = {
         response.ask(outputSpeech);
         }
 
-        session.attributes = {};
+        session.attributes = "pippo";
         callback(session.attributes);
     },
     "AMAZON.HelpIntent": function (intent, session, response) {
@@ -151,10 +161,9 @@ IsdsBot.prototype.intentHandlers = {
         response.tell(speechOutput);
     },    
     "AMAZON.YesIntent": function (intent, session, response) {
-        var sessionAttributes = session.attributes;
-        var cat = sessionAttributes.cat;
-
-        IsdsBotIntent(intent, session, response);
+        
+        //IsdsBot.intentHandlers.Facts(intent, session, response);
+        Facts2()
     }
 };
 
@@ -167,57 +176,47 @@ exports.handler = function (event, context) {
 
 
 
-// Create function to test the presence of the slot in the intent
-function getFunFactCat(intent,assignDefault) {
-    var cat = intent.slots.category
-    if (!cat || !cat.value) {
-        if(assignDefault){        
-            var cat = 'students';
-            return cat
+
+function Facts2 (intent, session, response) {
+        
+        //get the value of the intent's slot
+        var Fact_Category = session.attributes.Fact_Category;
+        if (!Fact_Category){
+            var Fact_Category = intent.slots.category.value;
         }
-    }
-    else {
-        return cat.value
-    }
-};
-
-
-function IsdsBotIntent (intent, session, response) {
-        //var cat = intent.slots.category.value;
-        
-        
-        var sessionAttributes = session.attributes;
-        var cat = sessionAttributes.cat;
-
-        if (!cat) {var cat = getFunFactCat(intent,false)};
-        //var cat = getFunFactCat(intent,false);
 
         var shouldEndSession = false;
-        
-        if(cat){
-            if(cat == "random"){
+        //var session_type = sessionAttributes.type.Fact_Category;        
+
+        if(Fact_Category){
+            if(Fact_Category == "random"){
                 var random2 = 2.9
                 var outputSpeech = funfacts[Object.keys(funfacts)[Math.floor(Math.random() * (random2))]][Math.floor(Math.random() * (random))];
-                //var outputSpeech = funfacts[cat][Math.floor(Math.random() * (random))];
+                //var outputSpeech = funfacts[Fact_Category][Math.floor(Math.random() * (random))];
                 var repromptText = "do you want to hear another random fact? You can also ask me about students,professors, and the department";
                 response.ask(outputSpeech,repromptText);    
-            } else if (cat =="professors" || cat == "students" || cat== "courses") {
-                var outputSpeech = funfacts[cat][Math.floor(Math.random() * (random))];
-                var repromptText = "do you want to hear another fact about"+ " " +cat;
-                
-                var persistent = {};
-                persistent = {
-                    prompted: true,
-                    cat: cat};
-                session.attributes = persistent;
+            } else if (Fact_Category =="professors" || Fact_Category == "students" || Fact_Category== "courses") {
+                var outputSpeech = funfacts[Fact_Category][Math.floor(Math.random() * (random))];
+                var repromptText = "do you want to hear another fact about"+ " " + Fact_Category;
 
-                response.ask(outputSpeech,repromptText);
+                var session_attributes = {};
+                session_attributes = {
+                    Prompted: true,
+                    FactCategory: Fact_Category};
+                session.attributes = session_attributes;
+
+                response.ask(outputSpeech,repromptText);                
                 callback(session.attributes);
 
             } else {
-                response.ask("You can ask me about students, professors, and courses. Which one do you like");
+                var outputSpeech = "You can ask me about students, professors, or courses";
+                var repromptText = "Ask me for a random fact if you prefer";
+                response.ask(outputSpeech,repromptText);
             }
         } else {
-            response.ask("You can ask me about students, professors, and courses. Which one do you like");
+            var outputSpeech = "You can ask me about students, professors, or courses";
+            var repromptText = "Ask me for a random fact if you prefer";
+            response.ask(outputSpeech,repromptText);
         }
+        
     };
