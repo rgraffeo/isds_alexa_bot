@@ -1,0 +1,17 @@
+{
+  "name": "isds_skill",
+  "version": "1.0.0",
+  "description": "a skill for the lsu isds department",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dds lab",
+  "license": "ISC",
+  "dependencies": {
+    "alexa-app": "^2.3.4",
+    "lodash": "^4.16.4",
+    "request": "^2.75.0",
+    "request-promise": "^4.1.1"
+  }
+}
