@@ -81,7 +81,7 @@ IsdsBot.prototype.intentHandlers = {
     "Consultant": function (intent, session, response) {
         var sessionAttributes = session.attributes;
 
-        var outputSpeech = "Ok " ;
+        var outputSpeech = "Ok ";
         var repromptText = "";
 
         response.ask(outputSpeech, repromptText);
@@ -91,10 +91,18 @@ IsdsBot.prototype.intentHandlers = {
     "Facts": function (intent, session, response) {
         
         //get the value of the intent's slot
-        var Fact_Category = session.attributes.Fact_Category;
-        if (!Fact_Category){
-            var Fact_Category = intent.slots.category.value;
-        }
+        var sessionAttributes = session.attributes
+
+        if (intent.slots.hasOwnProperty("category")) {
+            var Fact_Category = intent.slots.category.value;    
+        } else if ("FactCategory" in sessionAttributes) {
+            var Fact_Category = sessionAttributes.FactCategory;
+        };
+
+        /*else if (session.attributes.FactCategory){
+            var Fact_Category = session.attributes.FactCategory;
+        };*/
+        
 
         var shouldEndSession = false;
         //var session_type = sessionAttributes.type.Fact_Category;        
@@ -112,7 +120,7 @@ IsdsBot.prototype.intentHandlers = {
 
                 var session_attributes = {};
                 session_attributes = {
-                    Prompted: true,
+                    //Prompted: true,
                     FactCategory: Fact_Category};
                 session.attributes = session_attributes;
 
@@ -131,7 +139,7 @@ IsdsBot.prototype.intentHandlers = {
         }
         
     },
-    "SpeechName": function(intent, session, response) {
+    "SpeechName": function (intent, session, response) {
         var shouldEndSession = true;
         var intent_value = intent.slots.name.value;
         var session_type = session.attributes.type;
@@ -162,8 +170,19 @@ IsdsBot.prototype.intentHandlers = {
     },    
     "AMAZON.YesIntent": function (intent, session, response) {
         
-        //IsdsBot.intentHandlers.Facts(intent, session, response);
-        Facts2()
+        var intent = intent;
+        var session = session;
+        var response = response;
+        
+        //response.tell(session.attributes.FactCategory)
+        //IsdsBot.prototype.intentHandlers.Facts();
+        //Facts(intent, session, response);
+
+        intentName = "Facts";
+        intentCall = this.Facts;
+        //console.log('dispatch intent = ' + intentName);
+        //intentCall.call(this, intent, session, response);
+
     }
 };
 
@@ -174,49 +193,3 @@ exports.handler = function (event, context) {
     isdsbot.execute(event, context);
 };
 
-
-
-
-function Facts2 (intent, session, response) {
-        
-        //get the value of the intent's slot
-        var Fact_Category = session.attributes.Fact_Category;
-        if (!Fact_Category){
-            var Fact_Category = intent.slots.category.value;
-        }
-
-        var shouldEndSession = false;
-        //var session_type = sessionAttributes.type.Fact_Category;        
-
-        if(Fact_Category){
-            if(Fact_Category == "random"){
-                var random2 = 2.9
-                var outputSpeech = funfacts[Object.keys(funfacts)[Math.floor(Math.random() * (random2))]][Math.floor(Math.random() * (random))];
-                //var outputSpeech = funfacts[Fact_Category][Math.floor(Math.random() * (random))];
-                var repromptText = "do you want to hear another random fact? You can also ask me about students,professors, and the department";
-                response.ask(outputSpeech,repromptText);    
-            } else if (Fact_Category =="professors" || Fact_Category == "students" || Fact_Category== "courses") {
-                var outputSpeech = funfacts[Fact_Category][Math.floor(Math.random() * (random))];
-                var repromptText = "do you want to hear another fact about"+ " " + Fact_Category;
-
-                var session_attributes = {};
-                session_attributes = {
-                    Prompted: true,
-                    FactCategory: Fact_Category};
-                session.attributes = session_attributes;
-
-                response.ask(outputSpeech,repromptText);                
-                callback(session.attributes);
-
-            } else {
-                var outputSpeech = "You can ask me about students, professors, or courses";
-                var repromptText = "Ask me for a random fact if you prefer";
-                response.ask(outputSpeech,repromptText);
-            }
-        } else {
-            var outputSpeech = "You can ask me about students, professors, or courses";
-            var repromptText = "Ask me for a random fact if you prefer";
-            response.ask(outputSpeech,repromptText);
-        }
-        
-    };
