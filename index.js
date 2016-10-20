@@ -3,6 +3,7 @@ module.change_code = 1;
 var _ = require("lodash");
 var Skill = require("alexa-app");
 var ISDSbot = new Skill.app("ISDSbot");
+var ConsultHelp = require('./consultant_helper.js');
 
 var facts = {
     students:   [
@@ -48,7 +49,7 @@ ISDSbot.intent("sayName", {
   "slots": {
     "NAME": "AMAZON.US_FIRST_NAME"
   },
-  "utterances": ["{My|They|I|begin|build} {|name|call|am|} {is|me|called} {-|NAME}", 
+  "utterances": ["{My|They|I|begin|build} {|name|call|am|go|} {|by|is|me|called} {-|NAME}", 
   //"{-|NAME}"
   ]
 },
@@ -93,7 +94,7 @@ ISDSbot.intent("courseAdvisor", {
   "utterances": ["{give|suggest|offer} {me|us} {advice|counceling|suggestions}"]
 },
   function(request, response) {
-    return courseAdvisor(request, response);
+    return courseAdvisor(getConsultHelp(request), request, response);
     }
 );
 
@@ -105,8 +106,6 @@ ISDSbot.intent("courseInfo", {
   "{tell | give} {the } {description | information} {about | of} {courses | course } {-|COURSE}"]
 },
   function(request, response) {
-
-
 
     }
 );
@@ -216,39 +215,53 @@ function generalInfo(request, response) {
 };
 
 
+var getConsultHelp = function(request) {
+  var consultHelperData = request.session("CONSULT_DATA");
+  if (consultHelperData === undefined) {
+    consultHelperData = {};
+  }
+  return new ConsultHelp(consultHelperData);
+};
 
-function courseAdvisor(request, response) { 
+function courseAdvisor(consultHelp,request, response) { 
   
   var name = request.session("name");
-  var advisorInit = request.session("advisorInit")
+  var advisorInit = request.session("advisorInit");
   var isBachelor = request.session("isBachelor");
   var likeMath = request.session("likeMath");
-  var likeFinance = request.session("likeFinance")
+  var likeFinance = request.session("likeFinance");
 
-  var startedAdvisor = 1;
-  response.session("startedAdvisor", startedAdvisor)
+  //response.session("startedAdvisor", startedAdvisor)
+  var stepValue = consultHelp.currentStep;
+  var stepLength = consultHelp.consultant[0].steps.length;
 
-  if(!advisorInit) {
-    var speechOutput = name + ", i'll ask you some personal info in order to suggest you the best course tailored for skills" + ". lets start with the first one.";
-    response.say(speechOutput).shouldEndSession(false);
-    response.session("advisorInit", 1);
-    
-    var speechOutput = "are you a bachelor student?";
-    response.say(speechOutput).shouldEndSession(false);
-    response.session("isBachelor"," ");    
+  if(consultHelp.started == false) {
+    consultHelp.started = true;
+    consultHelp.index = 10;
+    var speechOutput = consultHelp.consultant[0].init;
+    response.say(speechOutput);
+    response.session("CONSULT_DATA",consultHelp)
+  }
+  
+  if(consultHelp.started == true && stepValue <= stepLength-1) {
+    var speechOutput = consultHelp.consultant[0].steps[stepValue].promt
+    var repromptOutput = "Sorry, I didn't catch that. " + consultHelp.consultant[0].steps[stepValue].promt
+    response.say(speechOutput)
+    response.reprompt(repromptOutput)
+    consultHelp.currentStep ++
+    response.session("CONSULT_DATA",consultHelp)
   }
 
-  if(isBachelor && !likeMath) {
-    var speechOutput = "do you consider yourself a quantitative thinker?";
-    response.say(speechOutput).shouldEndSession(false);
-    response.session("likeMath"," ");
+  if(consultHelp.started == true && stepValue == stepLength) {
+    var speechOutput = consultHelp.consultant[0].steps[stepValue].promt
+    var repromptOutput = "Sorry, I didn't catch that. " + consultHelp.consultant[0].steps[stepValue].promt
+    response.say(speechOutput)
+    response.reprompt(repromptOutput)
+    consultHelp.currentStep ++
+    response.session("CONSULT_DATA",consultHelp)
   }
 
-  if(isBachelor && likeMath && !likeFinance) {
-    var speechOutput = "do you like finalcial subjects?";
-    response.say(speechOutput).shouldEndSession(false);
-    response.session("likeFinance"," ");
-  }
+  //if(consultHelp.started == true)
 
 };
 
@@ -273,5 +286,5 @@ function randomNumber(max) {
 
 
 //export the ISDSbot module
-
+var test = 1
 module.exports = ISDSbot;
