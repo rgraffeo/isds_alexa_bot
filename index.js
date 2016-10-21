@@ -30,6 +30,8 @@ var facts = {
     };
 
 
+
+
 //var MadlibHelper = require("./madlib_helper");
 
 //on launch intent
@@ -114,29 +116,21 @@ ISDSbot.intent("courseInfo", {
 ISDSbot.intent("AMAZON.YesIntent", 
   {},
   function(request, response) {
-    var jsonRequest = request.data;
-    var isBachelor = jsonRequest.session.attributes.isBachelor
-    var likeMath = jsonRequest.session.attributes.likeMath
-    var likeFinance = jsonRequest.session.attributes.likeFinance
+    var jsonRequest = request.data
+    var last_intent = request.session("LAST_INTENT")
+    var consultHelperData = request.session("CONSULT_DATA")
+    var current_intent = jsonRequest.request.intent.name
 
-    if(isBachelor === " ") {
-      var isBachelor = 1
-      response.session("isBachelor", isBachelor)
-      return courseAdvisor(request, response);
+    if(last_intent == "courseAdvisor") {
+      var currentStep = consultHelperData.currentStep
+      consultHelperData.consultant[0].steps[currentStep].value = true
+      consultHelperData.currentStep ++
+      return courseAdvisor(consultHelperData, request, response)
     }
-
-    if(likeMath === " "){
-      var likeMath = 1
-      response.session("likeMath", likeMath)
-      return courseAdvisor(request, response)
+    
+    if(last_intent == "generalInfo") {
+      return generalInfo(request, response)
     }
-
-    if(likeFinance === " "){
-      var likeFinance = 1
-      response.session("likeFinance", likeFinance)
-      return selectCourse(request, response)
-    }
-
     //response.say(speechOutput).shouldEndSession(false);
     }
 );
@@ -144,30 +138,24 @@ ISDSbot.intent("AMAZON.YesIntent",
 ISDSbot.intent("AMAZON.NoIntent", 
   {},
   function(request, response) {
-    var jsonRequest = request.data;
-    var isBachelor = jsonRequest.session.attributes.isBachelor
-    var likeMath = jsonRequest.session.attributes.likeMath
-    var likeFinance = jsonRequest.session.attributes.likeFinance
+    var jsonRequest = request.data
+    var last_intent = request.session("LAST_INTENT")
+    var consultHelperData = request.session("CONSULT_DATA")
+    var current_intent = jsonRequest.request.intent.name
 
-    if(isBachelor === " ") {
-      var isBachelor = 0
-      response.session("isBachelor", isBachelor)
-      return courseAdvisor(request, response);
+    if(last_intent == "courseAdvisor") {
+      var currentStep = consultHelperData.currentStep
+      consultHelperData.consultant[0].steps[currentStep].value = true
+      consultHelperData.currentStep ++
+      return courseAdvisor(consultHelperData, request, response)
     }
+    
 
-    if(likeMath === " "){
-      var likeMath = 0
-      response.session("likeMath", likeMath)
-      return courseAdvisor(request, response)
+    if(last_intent == "generalInfo") {
+      var speechOutput = "can I do something else for you?"
+      response.say(speechOutput).shouldEndSession(false)
     }
-
-    if(likeFinance === " "){
-      var likeFinance = 0
-      response.session("likeFinance", likeFinance)
-      return selectCourse(request, response)
-    }
-
-    //response.say(speechOutput).shouldEndSession(false);
+    
     }
 );
 
@@ -186,32 +174,35 @@ ISDSbot.intent("AMAZON.StartOverIntent",
 
 function generalInfo(request, response) {
 //var name = request.session("NAME");
+  var jsonRequest = request.data
   var infocat = request.slot("INFOCAT");
-    
+  if(!infocat) {var infocat = request.session("INFOCAT")}
+  var last_intent = request.session("LAST_INTENT")
+  //var current_intent = jsonRequest.request.intent.name
+  var current_intent = "generalInfo"
+
   if (infocat == "students" || infocat == "professors" || infocat == "courses") {
     var speechOutput = facts[infocat][randomNumber(6)];
-
-    response.session("INFOCAT", infocat).shouldEndSession(false);
-    response.say(speechOutput);
     var repromptOutput = "Do you want to hear another fact about " + infocat + "?";
+    response.session("INFOCAT", infocat).shouldEndSession(false);
+    response.say(speechOutput).shouldEndSession(false);
     response.reprompt(repromptOutput).shouldEndSession(false);
-        
-    } 
+    }
   if (infocat == "random") {
     var outputCat = Object.keys(facts)[randomNumber(3)];
     var speechOutput = facts[outputCat][randomNumber(6)]; 
-
-    response.session("INFOCAT", infocat).shouldEndSession(false);
-    response.say(speechOutput);
     var repromptOutput = "Do you want to hear another " + infocat + " fact?";
+    response.session("INFOCAT", infocat).shouldEndSession(false);
+    response.say(speechOutput).shouldEndSession(false);
     response.reprompt(repromptOutput).shouldEndSession(false);
     }
   if (!infocat) {
     var speechOutput = "You can ask me about students, professors, and the department";
     var repromptOutput = "Try asking me a random fact maybe";
-    response.say(speechOutput);
-    response.reprompt(repromptOutput);
+    response.say(speechOutput).shouldEndSession(false);
+    response.reprompt(repromptOutput).shouldEndSession(false);
   }
+  response.session("LAST_INTENT",current_intent)
 };
 
 
@@ -224,12 +215,12 @@ var getConsultHelp = function(request) {
 };
 
 function courseAdvisor(consultHelp,request, response) { 
-  
+  var jsonRequest = request.data
+  var last_intent = request.session("LAST_INTENT")
+  //var current_intent = jsonRequest.request.intent.name;
+  var current_intent = "courseAdvisor"
+
   var name = request.session("name");
-  var advisorInit = request.session("advisorInit");
-  var isBachelor = request.session("isBachelor");
-  var likeMath = request.session("likeMath");
-  var likeFinance = request.session("likeFinance");
 
   //response.session("startedAdvisor", startedAdvisor)
   var stepValue = consultHelp.currentStep;
@@ -237,7 +228,7 @@ function courseAdvisor(consultHelp,request, response) {
 
   if(consultHelp.started == false) {
     consultHelp.started = true;
-    consultHelp.index = 10;
+    consultHelp.index = 0;
     var speechOutput = consultHelp.consultant[0].init;
     response.say(speechOutput);
     response.session("CONSULT_DATA",consultHelp)
@@ -248,35 +239,30 @@ function courseAdvisor(consultHelp,request, response) {
     var repromptOutput = "Sorry, I didn't catch that. " + consultHelp.consultant[0].steps[stepValue].promt
     response.say(speechOutput)
     response.reprompt(repromptOutput)
-    consultHelp.currentStep ++
+    //consultHelp.currentStep ++
     response.session("CONSULT_DATA",consultHelp)
   }
 
-  if(consultHelp.started == true && stepValue == stepLength) {
-    var speechOutput = consultHelp.consultant[0].steps[stepValue].promt
-    var repromptOutput = "Sorry, I didn't catch that. " + consultHelp.consultant[0].steps[stepValue].promt
-    response.say(speechOutput)
-    response.reprompt(repromptOutput)
-    consultHelp.currentStep ++
-    response.session("CONSULT_DATA",consultHelp)
+  if(consultHelp.started == true && stepValue >= stepLength) {
+    //response.session("CONSULT_DATA",consultHelp)
+    return determineCareerPath(request, response)
   }
 
-  //if(consultHelp.started == true)
+  response.session("LAST_INTENT",current_intent)
+
 
 };
 
 
-function selectCourse(request, response) {
-  var jsonRequest = request.data
-  var isBachelor = request.session("isBachelor");
-  var likeMath = request.session("likeMath");
-  var likeFinance = request.session("likeFinance")
-  var name = request.session("name")
-  if(isBachelor && likeMath && likeFinance) {
-    response.say(name + ", you seem to like everything, you should do a P.H.D")
-  }
+function determineCareerPath(request, response) {
+    var jsonRequest = request.data
+    var last_intent = request.session("LAST_INTENT")
+    var consultHelperData = request.session("CONSULT_DATA")
+    //var current_intent = jsonRequest.request.intent.name
+    response.session("CONSULT_DATA", consultHelperData)
+    response.say(", you seem to like everything, you should do a P.H.D")
+  
 };
-
 
 
 function randomNumber(max) {
@@ -286,5 +272,4 @@ function randomNumber(max) {
 
 
 //export the ISDSbot module
-var test = 1
 module.exports = ISDSbot;

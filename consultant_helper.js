@@ -43,13 +43,16 @@ function ConsultHelp(obj) {
 module.exports = ConsultHelp;
 
 
+/*
 var consultHelp = new ConsultHelp()
+console.log(consultHelp.consultant[0].steps.length)
+
 var data = consultHelp.consultant[0].steps
 //console.log(data)
 //console.log(_.filter(data, function(o) { return !o.promt; }));
 console.log(_.filter(data, ["value", null]));
 
-/*
+
 var consultHelp = new ConsultHelp()
 console.log(consultHelp.started == false)
 console.log(typeof(consultHelp))
