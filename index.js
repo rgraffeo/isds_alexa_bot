@@ -6,67 +6,81 @@ var ISDSbot = new Skill.app("ISDSbot");
 var ConsultHelp = require('./consultant_helper.js');
 
 var facts = {
-    students:   [
-            "we have the tallest and arguably nicest phd students of the whole business school",
-            "we love to work from home during weekends",
-            "the business school is our second home",
-            "we pretend to know about computers and business",
-            "the I.S.D.S students get good jobs",
-            "the I.S.D.S students get the highest salary in the business school"],
+    students: [
+      "Students pursuing a Bachelor's degree in I.S.D.S. can choose to concentrate in either Business Intelligence or Information Technology ",
+      "Did you know that there are currently _ students in the I.S.D.S. program?",
+      "The Association of Information Technology Professionals is a great organization for I.S.D.S. students to get inolved in",
+      "I.S.D.S. students that study abroad are highly competitive in the global market",
+      "_% of I.S.D.S. students have full time job offers within 6 months of graduation"],
     professors: [
-            "I.S.D.S professors publish a lot",
-            "I.S.D.S professors love to teach",
-            "I.S.D.S professors engage in very interesting projects",
-            "I.S.D.S professors like to work with students one on one",
-            "I.S.D.S professors are fun people",
-            "I.S.D.S professors work hard and play harder"],
-    courses: [
-            "I.S.D.S courses prepare you for a great career",
-            "idsds courses are challenging but fun",
-            "many students from other departments take I.S.D.S courses ",
-            "I.S.D.S courses are hands on and provide with grat skills",
-            "I.S.D.S courses are both technical and strategic",
-            "I.S.D.S courses will get you a job"]
-    };
-
-
+      "Did you know that _ of the I.S.D.S. professors are alumni of L.S.U.?",
+      "The I.S.D.S. department has a diverse faculty from _ cities and _ different countries",
+      "The I.S.D.S. faculty have expertise in various domains like e-commerce, medical informatics, quantitative modeling, and more ",
+      "Many of the faculty members in I.S.D.S. are published in magazines, academic journals, and textbooks "],
+    department: [
+      "The I.S.D.S. department offers a Bachelor of Science in I.S.D.S., a Master of Science in Analytics and a PhD in I.S.D.S.",
+      "The I.S.D.S. department connects students to a career network that provides opportunities for students during and after college",
+      "The department of Information Systems and Decision Sciences prepares students to design, implement, analyze, and manage information technology",
+      "The I.S.D.S. department strives to accomplish research that makes significant contributions to the advancement of knowledge"],
+    'business school': [
+      "the Business Education Complex is among the top 10 business school facilities in the country",
+      "the B.E.C. is a state of the art facility with a four-story rotunda, a 300 seat auditorium, and classrooms equipped with the latest technology",
+      "The Business Education Complex has been home to the E.J. Ourso School of Business since 2012",
+      "the B.E.C. is a 60 million dollar facility making it the largest public and private capital investment in the history of LSU"]    
+};    
+ 
 
 
 //var MadlibHelper = require("./madlib_helper");
 
 //on launch intent
 ISDSbot.launch(function(request, response) {
-    var speechOutput = "Hi there! I'm the the I.S.D.S assistant. I'm here to help you. What's your name?";
-    var repromptOutput = "Sorry, I didn't catch that. Say, my name is";
-
-    response.say(speechOutput).shouldEndSession(false);
-    response.reprompt(repromptOutput).shouldEndSession(false);
-
+  return onLaunch(request,response)
 });
 
-//skill's intentes
+//skill's intents
 
 //catch user's name
 ISDSbot.intent("sayName", {
   "slots": {
     "NAME": "AMAZON.US_FIRST_NAME"
   },
-  "utterances": ["{My|They|I|begin|build} {|name|call|am|go|} {|by|is|me|called} {-|NAME}", 
-  //"{-|NAME}"
+  "utterances": [
+  "my name is {-|NAME}",
+  "they call me {-|NAME}",
+  "i go by {-|NAME}",
+  "call me {-|NAME}",
+  "i am {-|NAME}",
+  "{-|NAME} is the name I go by"
   ]
 },
   function(request, response) {
     var name = request.slot("NAME");
-    if(name) {
-      var speechOutput = "Hi " + name + ". My knowledge is limited at the moment, but i can give you give you information about I.S.D.S courses, or i can give you general facts";
-    }else {
-      var speechOutput = "Hi!. My knowledge is limited at the moment, but i can give you give you information about I.S.D.S courses, or i can give you general facts";
-    }
+    var prev_name = request.session("NAME")
+    var last_intent = request.session("LAST_INTENT")
+
+    if(!prev_name) 
+    {
+      if(name) 
+      {
+        var speechOutput = "hi " + name + ". my knowledge is limited at the moment, but i can give you information about I.S.D.S carrer paths, or i can give you general facts";
+      }else 
+      {
+        var speechOutput = "i can help you choosing your I.S.D.S career path, or you can ask me about general facts";
+      }
   	
-  	var repromptOutput = "Ask me for courses' advice, or for general information";
-    
-    response.session("name", name);
+  	var repromptOutput = "try saying i am followed by your name";
+  
+    response.session("NAME", name);
     response.say(speechOutput).shouldEndSession(false);
+    response.reprompt(repromptOutput).shouldEndSession(false)
+    }
+
+    if(prev_name) {
+      var speechOutput = "i already know your name " + name + "!. if you want to start over the conversation just say start over, or restart"
+      var repromptOutput = "i already know your name " + name + "!. if you want to start over the conversation just say start over, or restart"
+      response.say(speechOutput).shouldEndSession(false)
+    }
     }
 );
 
@@ -78,7 +92,7 @@ ISDSbot.intent("generalInfo", {
   "utterances": [
    "{give me| tell me | } {a| }  {fun | nice | interesting |} {fact} {about| } {-|INFOCAT}", 
    "{give me| tell me | } {a| } {-|INFOCAT} {fact}",
-   "{-|INFOCAT}",
+   "{try |} {give| giving| } {me |} {general } {facts}",
    "what can you tell me",
    ]
 },
@@ -90,10 +104,9 @@ ISDSbot.intent("generalInfo", {
 
 //course advisor intent
 ISDSbot.intent("courseAdvisor", {
-  "slots": {
-    "NAME": "NONE"
-  },
-  "utterances": ["{give|suggest|offer} {me|us} {advice|counceling|suggestions}"]
+  "utterances": 
+  ["{give|suggest|offer} {me|us} {advice|counceling|suggestions}",
+  "{suggest} {me|us} a career path"]
 },
   function(request, response) {
     return courseAdvisor(getConsultHelp(request), request, response);
@@ -145,14 +158,13 @@ ISDSbot.intent("AMAZON.NoIntent",
 
     if(last_intent == "courseAdvisor") {
       var currentStep = consultHelperData.currentStep
-      consultHelperData.consultant[0].steps[currentStep].value = true
+      consultHelperData.consultant[0].steps[currentStep].value = false
       consultHelperData.currentStep ++
       return courseAdvisor(consultHelperData, request, response)
     }
     
-
     if(last_intent == "generalInfo") {
-      var speechOutput = "can I do something else for you?"
+      var speechOutput = "can I do something else for you? You can stop me by saying exit"
       response.say(speechOutput).shouldEndSession(false)
     }
     
@@ -160,15 +172,41 @@ ISDSbot.intent("AMAZON.NoIntent",
 );
 
 
-ISDSbot.intent("AMAZON.StartOverIntent", 
+ISDSbot.intent("AMAZON.CancelIntent", 
   {},
   function(request, response) {
-      
-
-
+    var name = request.slot("NAME");
+    if(name) {
+      var speechOutput = name + ", nice talking to you. Bye!"
+    } else {
+      var speechOutput = "nice talking to you. Bye!"
+    }
+    
+    response.say(speechOutput).shouldEndSession(true)
     }
 );
 
+ISDSbot.intent("AMAZON.StopIntent", 
+  {},
+  function(request, response) {
+    var name = request.slot("NAME");
+    if(name) {
+      var speechOutput = name + ", nice talking to you. Bye!"
+    } else {
+      var speechOutput = "nice talking to you. Bye!"
+    }
+    
+    response.say(speechOutput).shouldEndSession(true)
+    }
+);
+
+ISDSbot.intent("AMAZON.StartOverIntent", 
+  {},
+  function(request, response) {
+      response.clearSession();
+      return onLaunch(request,response)
+    }
+);
 
 //application functions
 
@@ -181,23 +219,23 @@ function generalInfo(request, response) {
   //var current_intent = jsonRequest.request.intent.name
   var current_intent = "generalInfo"
 
-  if (infocat == "students" || infocat == "professors" || infocat == "courses") {
-    var speechOutput = facts[infocat][randomNumber(6)];
+  if (infocat == "students" || infocat == "department" || infocat == "professors" || infocat == "business school") {
+    var speechOutput = facts[infocat][randomNumber(4)];
     var repromptOutput = "Do you want to hear another fact about " + infocat + "?";
     response.session("INFOCAT", infocat).shouldEndSession(false);
     response.say(speechOutput).shouldEndSession(false);
     response.reprompt(repromptOutput).shouldEndSession(false);
     }
   if (infocat == "random") {
-    var outputCat = Object.keys(facts)[randomNumber(3)];
-    var speechOutput = facts[outputCat][randomNumber(6)]; 
+    var outputCat = Object.keys(facts)[randomNumber(4)];
+    var speechOutput = facts[outputCat][randomNumber(4)]; 
     var repromptOutput = "Do you want to hear another " + infocat + " fact?";
     response.session("INFOCAT", infocat).shouldEndSession(false);
     response.say(speechOutput).shouldEndSession(false);
     response.reprompt(repromptOutput).shouldEndSession(false);
     }
   if (!infocat) {
-    var speechOutput = "You can ask me about students, professors, and the department";
+    var speechOutput = "You can ask me about students, professors, the business school, and the department";
     var repromptOutput = "Try asking me a random fact maybe";
     response.say(speechOutput).shouldEndSession(false);
     response.reprompt(repromptOutput).shouldEndSession(false);
@@ -230,15 +268,15 @@ function courseAdvisor(consultHelp,request, response) {
     consultHelp.started = true;
     consultHelp.index = 0;
     var speechOutput = consultHelp.consultant[0].init;
-    response.say(speechOutput);
+    response.say(speechOutput).shouldEndSession(false);
     response.session("CONSULT_DATA",consultHelp)
   }
   
   if(consultHelp.started == true && stepValue <= stepLength-1) {
     var speechOutput = consultHelp.consultant[0].steps[stepValue].promt
     var repromptOutput = "Sorry, I didn't catch that. " + consultHelp.consultant[0].steps[stepValue].promt
-    response.say(speechOutput)
-    response.reprompt(repromptOutput)
+    response.say(speechOutput).shouldEndSession(false)
+    response.reprompt(repromptOutput).shouldEndSession(false)
     //consultHelp.currentStep ++
     response.session("CONSULT_DATA",consultHelp)
   }
@@ -249,8 +287,19 @@ function courseAdvisor(consultHelp,request, response) {
   }
 
   response.session("LAST_INTENT",current_intent)
+};
 
+function onLaunch(request, response) {
+    var speechOutput = "Hi there! I'm the the I.S.D.S assistant. I'm here to help you. What's your name?";
+    var repromptOutput = "Sorry, I didn't catch that. Say, my name is";
 
+    response.say(speechOutput).shouldEndSession(false);
+    response.reprompt(repromptOutput).shouldEndSession(false);
+    response.card({
+      type: "Simple",
+      title: "Available functionalities",  //this is not required for type Simple OR Standard 
+      content:  "These are my core functionalities: \n 1-Give facts about students, the department, the business school, and ISDS professors \n 2-Suggest ISDS courses and career paths"
+});
 };
 
 
@@ -258,8 +307,13 @@ function determineCareerPath(request, response) {
     var jsonRequest = request.data
     var last_intent = request.session("LAST_INTENT")
     var consultHelperData = request.session("CONSULT_DATA")
+
+    //var answer = consultHelperData.consultant[0].steps.map(function(a) {return a.value;});
+    //var category = consultHelperData.consultant[0].steps.map(function(a) {return a.value;});
+    //var agg = aggregate(consultant_helper.consultant[0].steps, "category", "value", add);
+    //response.say(agg)
     //var current_intent = jsonRequest.request.intent.name
-    response.session("CONSULT_DATA", consultHelperData)
+    response.session("CONSULT_DATA", consultHelperData).shouldEndSession(false)
     response.say(", you seem to like everything, you should do a P.H.D")
   
 };
@@ -269,6 +323,32 @@ function randomNumber(max) {
 	var randomNum = Math.floor(Math.random() * max);
 	return randomNum
 };
+
+
+function aggregate(object, toGroup, toAggregate, fn, val0) {
+    function deepFlatten(x) {
+        if ( x[toGroup] !== undefined ) // Leaf
+            return x;
+        return _.chain(x)
+                .map(function(v) { return deepFlatten(v); })
+                .flatten()
+                .value();
+    }
+
+    return _.chain(deepFlatten(object))
+            .groupBy(toGroup)
+            .map(function(g, key) {
+                return {
+                    type: key,
+                    val: _(g).reduce(function(m, x) {
+                        return fn(m, x[toAggregate]);
+                    }, val0 || 0)
+                };
+            })
+            .value();
+};
+
+function add(a,b) { return a + b; }
 
 
 //export the ISDSbot module

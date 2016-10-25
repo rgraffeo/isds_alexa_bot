@@ -8,26 +8,30 @@ function ConsultHelp(obj) {
   	this.currentStep = 0;
   	this.consultant = [
   	{	
-  		init: ", i'll ask you some personal info in order to suggest you the best course tailored for skills" + ". lets start with the first one.",
+  		init: "i'll ask you some information in order to suggest you the best course tailored for your skills" + ". Please answer saying yes, or no. lets start with the first one.",
   		steps: [
   		{
   			value: null,
-  			promt: "are you a bachelor student?",
-  			help: "are you a bachelor student?"
+  			promt: "are you interested in programming?",
+        category: "programming",
+  			help: "programming is a process that leads from an original formulation of a computing problem to executable computer programs"
   		},
   		{
   		  value: null,
-  			promt: "do you like quantitave courses?",
+  			promt: "do you want to learn more about Big Data?",
+        category: "dataAnalysis",
   			help: "do you like quantitave courses?"	
   		},
   		{
   			value: null,
-  			promt: "do you like finalcial subjects?",
+  			promt: "do you want to learn how to analyze, design, and implement systems to support the operations and management functions of an organization?",
+        category: "strategy",
   			help: "do you like finalcial subjects?"
   		},
       {
         value: null,
-        promt: "would you like to challenge yourself and learn how to program?",
+        promt: "would you like to know how to strategically leverage technology inside organizations?",
+        category: "strategy",
         help: "would you like to challenge yourself and learn how to program?"
       }      
 
@@ -38,7 +42,7 @@ function ConsultHelp(obj) {
     for (var prop in obj) this[prop] = obj[prop];
 }
 
-
+    
 
 module.exports = ConsultHelp;
 
