@@ -26,14 +26,14 @@ function ConsultHelp(obj) {
   			value: null,
   			promt: "do you want to learn how to analyze, design, and implement systems to support the operations and management functions of an organization?",
         category: "strategy",
-  			help: "do you like finalcial subjects?"
+  			help: "do you like  subjects?"
   		},
       {
         value: null,
         promt: "would you like to know how to strategically leverage technology inside organizations?",
         category: "strategy",
         help: "would you like to challenge yourself and learn how to program?"
-      }      
+      }
 
   		]
   	}

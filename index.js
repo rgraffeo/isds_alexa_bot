@@ -53,7 +53,7 @@ ISDSbot.intent("sayName", {
   "i am {-|NAME}",
   "{-|NAME} is the name I go by"
   ]
-},
+  },
   function(request, response) {
     var name = request.slot("NAME");
     var prev_name = request.session("NAME")
@@ -77,8 +77,8 @@ ISDSbot.intent("sayName", {
     }
 
     if(prev_name) {
-      var speechOutput = "i already know your name " + name + "!. if you want to start over the conversation just say start over, or restart"
-      var repromptOutput = "i already know your name " + name + "!. if you want to start over the conversation just say start over, or restart"
+      var speechOutput = "i already know your name " + prev_name + "!. if you want to start over the conversation just say start over, or restart"
+      var repromptOutput = "i already know your name " + prev_name + "!. if you want to start over the conversation just say start over, or restart"
       response.say(speechOutput).shouldEndSession(false)
     }
     }
