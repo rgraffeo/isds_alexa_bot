@@ -28,7 +28,7 @@ var facts = {
       "The Business Education Complex has been home to the E.J. Ourso School of Business since 2012",
       "the B.E.C. is a 60 million dollar facility making it the largest public and private capital investment in the history of LSU"]    
 };    
- 
+
 
 
 //var MadlibHelper = require("./madlib_helper");
