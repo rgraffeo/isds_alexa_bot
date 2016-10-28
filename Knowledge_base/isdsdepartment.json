@@ -1,0 +1,34 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Baton Rouge, Louisiana",
+    "postalCode": "70803",
+    "streetAddress": "Nicholson Drive Extension"
+  },
+  "email": "",
+  "faxNumber": "",
+  "member": [
+    {
+      "@type": "Organization"
+    },
+    {
+      "@type": "Organization"
+    }
+  ],
+  "alumni": [
+    {
+      "@type": "Person",
+      "name": ""
+    },
+    {
+      "@type": "Person",
+      "name": ""
+    }
+  ],
+  "name": "The Information Systems & Decision Sciences Department",
+  "telephone": "",
+  //"description": "ISDS, or Information Systems and Decision Sciences​, is basically an organization’s application of computer technology to help achieve its goals. Professionals in this field understand both the technical and non-technical factors vital to an organization’s strategic advantage and superior performance."
+  "description": "We prepare students to design, implement, analyze, and manage information technology systems. Research collaborations leverage the diverse research interests and expertise of our faculty in domains as varied as medical informatics, e-commerce, disaster management, IT outsourcing, data mining, quantitative modeling, privacy and ethics, global e-business, the strategic use of technology and traffic safety."
+}

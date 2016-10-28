@@ -12,26 +12,38 @@ function ConsultHelp(obj) {
   		steps: [
   		{
   			value: null,
-  			promt: "are you interested in programming?",
-        category: "programming",
+  			promt: "are you interested in programming or user interfaces design?",
+        category: "IT",
   			help: "programming is a process that leads from an original formulation of a computing problem to executable computer programs"
   		},
   		{
   		  value: null,
-  			promt: "do you want to learn more about Big Data?",
-        category: "dataAnalysis",
+  			promt: "would you like to know how to strategically leverage technology inside organizations?",
+        category: "IT",
   			help: "do you like quantitave courses?"	
   		},
   		{
   			value: null,
-  			promt: "do you want to learn how to analyze, design, and implement systems to support the operations and management functions of an organization?",
-        category: "strategy",
+  			promt: "do you want to build business intelligence and analytical skills?",
+        category: "BI",
   			help: "do you like  subjects?"
   		},
       {
         value: null,
-        promt: "would you like to know how to strategically leverage technology inside organizations?",
-        category: "strategy",
+        promt: "are you interested in building database management systems or other sofware applications?",
+        category: "IT",
+        help: "would you like to challenge yourself and learn how to program?"
+      },
+      {
+        value: null,
+        promt: "do you want to investigate what is big data and learn how to extract actionable information from it?",
+        category: "BI",
+        help: "would you like to challenge yourself and learn how to program?"
+      },
+      {
+        value: null,
+        promt: "do you want to understand industry specific analytics in marketing, healthcare, and telecommunications?",
+        category: "BI",
         help: "would you like to challenge yourself and learn how to program?"
       }
 
@@ -42,7 +54,6 @@ function ConsultHelp(obj) {
     for (var prop in obj) this[prop] = obj[prop];
 }
 
-    
 
 module.exports = ConsultHelp;
 

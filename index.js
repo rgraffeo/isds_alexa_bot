@@ -109,8 +109,9 @@ ISDSbot.intent("generalInfo", {
 //course advisor intent
 ISDSbot.intent("courseAdvisor", {
   "utterances": [
-  "{give|suggest|offer} {me|us} {advice|counceling|suggestions}",
-  "{suggest} {me|us} a career path"
+  "help me deciding what concentration {do | take |}",
+  "give me advice about {my |} career path",
+  "help me deciding a carreer path"
   ]
 },
   function(request, response) {
@@ -123,7 +124,9 @@ ISDSbot.intent("queryKnowledgeBase", {
     "ENTITY": "ENTITY"
   },
   "utterances": [
-  "who is {-|ENTITY}"
+  "who is {-|ENTITY}",
+  "what is {the |} {-|ENTITY}",
+  "what does the {-|ENTITY} {do |}"
   ]
 },
   function(request, response) {
@@ -241,14 +244,14 @@ function generalInfo(request, response) {
     response.reprompt(repromptOutput).shouldEndSession(false);
     }
   if (!infocat) {
-    var speechOutput = "You can ask me about students, professors, the business school, and the department";
+    //var speechOutput = "You can ask me about students, professors, the business school, and the department";
+    var speechOutput = "You can ask me for a random fact"
     var repromptOutput = "Try asking me a random fact maybe";
     response.say(speechOutput).shouldEndSession(false);
     response.reprompt(repromptOutput).shouldEndSession(false);
   }
   response.session("LAST_INTENT",current_intent)
 };
-
 
 var getConsultHelp = function(request) {
   var consultHelperData = request.session("CONSULT_DATA");
@@ -293,6 +296,7 @@ function courseAdvisor(consultHelp,request, response) {
   }
 
   response.session("LAST_INTENT",current_intent)
+  response.session("STEPLENGTH",stepLength)
 };
 
 function onLaunch(request, response) {
@@ -310,17 +314,35 @@ function onLaunch(request, response) {
 
 
 function determineCareerPath(request, response) {
-    var jsonRequest = request.data
-    var last_intent = request.session("LAST_INTENT")
-    var consultHelperData = request.session("CONSULT_DATA")
+  var jsonRequest = request.data
+  var last_intent = request.session("LAST_INTENT")
+  var consultHelperData = request.session("CONSULT_DATA")
 
-    //var answer = consultHelperData.consultant[0].steps.map(function(a) {return a.value;});
-    //var category = consultHelperData.consultant[0].steps.map(function(a) {return a.value;});
-    //var agg = aggregate(consultant_helper.consultant[0].steps, "category", "value", add);
-    //response.say(agg)
-    //var current_intent = jsonRequest.request.intent.name
-    response.session("CONSULT_DATA", consultHelperData).shouldEndSession(false)
-    response.say(", you seem to like everything, you should do a P.H.D")
+  var agg = aggregate(consultHelperData.consultant[0].steps, "category", "value", add);
+  
+  var ITscore = jsonQuery("[type=IT]val", {
+  data: agg
+  });
+
+  var BIscore = jsonQuery("[type=BI]val", {
+  data: agg
+  });
+  
+  if(ITscore.value > 0 || BIscore.value > 0) {
+    if(ITscore.value > BIscore.value) {
+      response.say("great IT score").shouldEndSession(false)
+    };
+    if(BIscore.value > ITscore.value) {
+      response.say("great BI score").shouldEndSession(false)
+    };
+    if(BIscore.value == ITscore.value) {
+      response.say("equal").shouldEndSession(false)
+    };
+  };
+  if(ITscore.value == 0 && BIscore.value == 0) {
+    var speechOutput = "Unfortunately you seem not to like anything about I.S.D.S. However, if you ....";
+    response.say(speechOutput)shouldEndSession(false);
+  }
   
 };
 
@@ -366,14 +388,13 @@ function queryKnowledgeBase(request, response) {
   data: entities
   });
 
-  // response.session("EMPTY",queryResult.value);
-  // response.session("FILL",queryResult.value.path);
-  if(entity) {
+  if(queryResult.value != null) {
     var entityData = require("./Knowledge_base/"+queryResult.value.path+".json");
     var speechOutput = entityData.description;
+    response.session("PATH", queryResult.value.path)
     response.say(speechOutput).shouldEndSession(false);
   }
-  if(!entity) {
+  if(queryResult.value == null) {
     var speechOutput = "sorry, I don't have an answer to that question"
     response.say(speechOutput).shouldEndSession(false);
   }
