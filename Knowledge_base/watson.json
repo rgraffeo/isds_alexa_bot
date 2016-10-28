@@ -1,0 +1,23 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Edward Watson",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "The Pennsylvania State University",
+       "sameAs": ""
+      },
+      {
+        "@type": "CollegeOrUniversity",
+        "name": "Syracuse University",
+        "sameAs": ""
+      }
+      ],
+      "startDate": "1994",
+      "jobTitle": "I.S.D.S Department Chair"
+  },
+  "description": "Ed holds the Department Chair of Information Systems and Information Sciences. He is interested in Global Operations and Supply Chain Management, Technology Innovation, Enterprise Systems"
+}

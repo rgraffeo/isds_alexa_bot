@@ -67,13 +67,13 @@ ISDSbot.intent("sayName", {
     {
       if(name) 
       {
-        var speechOutput = "hi " + name + ". my knowledge is limited at the moment, but i can give you information about I.S.D.S carrer paths, or i can give you general facts";
+        var speechOutput = "hi " + name + ". my knowledge is limited at the moment. To know more about what I can do for you ask for help";
       }else 
       {
-        var speechOutput = "i can help you choosing your I.S.D.S career path, or you can ask me about general facts";
+        var speechOutput = "my knowledge is limited at the moment. To know more about what I can do for you ask for help";
       }
   	
-  	var repromptOutput = "try saying i am followed by your name";
+  	var repromptOutput = "try saying: i am, followed by your name";
   
     response.session("NAME", name);
     response.say(speechOutput).shouldEndSession(false);
@@ -296,8 +296,8 @@ function courseAdvisor(consultHelp,request, response) {
 };
 
 function onLaunch(request, response) {
-    var speechOutput = "Hi there! I'm the the I.S.D.S assistant. I'm here to help you. What's your name?";
-    var repromptOutput = "Sorry, I didn't catch that. Say, my name is";
+    var speechOutput = "Hi there! I'm the the I.S.D.S assistant. I'm here to help you. What's your name? Say: my name is, followed by your name";
+    var repromptOutput = "Sorry, I didn't catch that. Say: my name is, followed by your name";
 
     response.say(speechOutput).shouldEndSession(false);
     response.reprompt(repromptOutput).shouldEndSession(false);
@@ -360,14 +360,24 @@ function add(a,b) { return a + b; }
 function queryKnowledgeBase(request, response) {
   var jsonRequest = request.data
   var entity = request.slot("ENTITY");
+  var entity = _.lowerCase(entity)
  
   var queryResult = jsonQuery("[entity="+entity+"]", {
   data: entities
   });
 
-  var entityData = require("./Knowledge_base/"+queryResult.value.path+".json");
-  var speechOutput = entityData.name
-  response.say(speechOutput)
+  // response.session("EMPTY",queryResult.value);
+  // response.session("FILL",queryResult.value.path);
+  if(entity) {
+    var entityData = require("./Knowledge_base/"+queryResult.value.path+".json");
+    var speechOutput = entityData.description;
+    response.say(speechOutput).shouldEndSession(false);
+  }
+  if(!entity) {
+    var speechOutput = "sorry, I don't have an answer to that question"
+    response.say(speechOutput).shouldEndSession(false);
+  }
+    
 }
 
 //export the ISDSbot module
