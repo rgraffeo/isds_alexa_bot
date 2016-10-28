@@ -4,6 +4,11 @@ var _ = require("lodash");
 var Skill = require("alexa-app");
 var ISDSbot = new Skill.app("ISDSbot");
 var ConsultHelp = require('./consultant_helper.js');
+var jsonfile = require('jsonfile')
+var jsonQuery = require('json-query')
+var entities = require('./knowledge_paths.js');
+
+//var file = jsonfile.readFileSync("./Knowledge_base/piccoli.json");
 
 var facts = {
     students: [
@@ -28,7 +33,6 @@ var facts = {
       "The Business Education Complex has been home to the E.J. Ourso School of Business since 2012",
       "the B.E.C. is a 60 million dollar facility making it the largest public and private capital investment in the history of LSU"]    
 };    
-
 
 
 //var MadlibHelper = require("./madlib_helper");
@@ -104,24 +108,26 @@ ISDSbot.intent("generalInfo", {
 
 //course advisor intent
 ISDSbot.intent("courseAdvisor", {
-  "utterances": 
-  ["{give|suggest|offer} {me|us} {advice|counceling|suggestions}",
-  "{suggest} {me|us} a career path"]
+  "utterances": [
+  "{give|suggest|offer} {me|us} {advice|counceling|suggestions}",
+  "{suggest} {me|us} a career path"
+  ]
 },
   function(request, response) {
     return courseAdvisor(getConsultHelp(request), request, response);
     }
 );
 
-ISDSbot.intent("courseInfo", {
+ISDSbot.intent("queryKnowledgeBase", {
   "slots": {
-    "COURSE": "COURSE"
+    "ENTITY": "ENTITY"
   },
-  "utterances": ["{what | tell} {is} {course} {-|COURSE}",
-  "{tell | give} {the } {description | information} {about | of} {courses | course } {-|COURSE}"]
+  "utterances": [
+  "who is {-|ENTITY}"
+  ]
 },
   function(request, response) {
-
+    return queryKnowledgeBase(request, response);
     }
 );
 
@@ -350,6 +356,19 @@ function aggregate(object, toGroup, toAggregate, fn, val0) {
 
 function add(a,b) { return a + b; }
 
+
+function queryKnowledgeBase(request, response) {
+  var jsonRequest = request.data
+  var entity = request.slot("ENTITY");
+ 
+  var queryResult = jsonQuery("[entity="+entity+"]", {
+  data: entities
+  });
+
+  var entityData = require("./Knowledge_base/"+queryResult.value.path+".json");
+  var speechOutput = entityData.name
+  response.say(speechOutput)
+}
 
 //export the ISDSbot module
 module.exports = ISDSbot;
