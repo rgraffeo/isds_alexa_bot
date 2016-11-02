@@ -12,22 +12,25 @@ function ConsultHelp(obj) {
   		steps: [
   		{
   			value: null,
+        weight: [1,0.8,0.5,0],
   			promt: "are you interested in programming or user interfaces design?",
         category: "IT",
   			help: "programming is a process that leads from an original formulation of a computing problem to executable computer programs"
   		},
   		{
   		  value: null,
-  			promt: "would you like to know how to strategically leverage technology inside organizations?",
+        weight: [0.5,1,0.5,0.2],
+  			promt: "are you exited about IT innovation and its business applications?",
         category: "IT",
   			help: "do you like quantitave courses?"	
   		},
   		{
   			value: null,
+        weight: [0,0.5,0,1],
   			promt: "do you want to build business intelligence and analytical skills?",
         category: "BI",
   			help: "do you like  subjects?"
-  		},
+  		}/*,
       {
         value: null,
         promt: "are you interested in building database management systems or other sofware applications?",
@@ -46,7 +49,7 @@ function ConsultHelp(obj) {
         category: "BI",
         help: "would you like to challenge yourself and learn how to program?"
       }
-
+*/
   		]
   	}
 

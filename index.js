@@ -8,7 +8,6 @@ var jsonfile = require('jsonfile')
 var jsonQuery = require('json-query')
 var entities = require('./knowledge_paths.js');
 
-//var file = jsonfile.readFileSync("./Knowledge_base/piccoli.json");
 
 var facts = {
     students: [
@@ -34,8 +33,6 @@ var facts = {
       "the B.E.C. is a 60 million dollar facility making it the largest public and private capital investment in the history of LSU"]    
 };    
 
-
-//var MadlibHelper = require("./madlib_helper");
 
 //on launch intent
 ISDSbot.launch(function(request, response) {
@@ -65,19 +62,19 @@ ISDSbot.intent("sayName", {
 
     if(!prev_name) 
     {
-      if(name) 
+      if(name)
       {
-        var speechOutput = "hi " + name + ". my knowledge is limited at the moment. To know more about what I can do for you ask for help";
+        var speechOutput = "hi " + name + ". I can help you in choosing you're concentration, I can give you random interesting facts, or you can ask me about specific professors";
       }else 
       {
-        var speechOutput = "my knowledge is limited at the moment. To know more about what I can do for you ask for help";
+        var speechOutput = "I didn't catch that. what's your're name";
       }
   	
-  	var repromptOutput = "try saying: i am, followed by your name";
+  	//var repromptOutput = "try saying: i am, followed by your name";
   
     response.session("NAME", name);
     response.say(speechOutput).shouldEndSession(false);
-    response.reprompt(repromptOutput).shouldEndSession(false)
+    //response.reprompt(repromptOutput).shouldEndSession(false)
     }
 
     if(prev_name) {
@@ -212,10 +209,21 @@ ISDSbot.intent("AMAZON.StopIntent",
 ISDSbot.intent("AMAZON.StartOverIntent", 
   {},
   function(request, response) {
-      response.clearSession();
-      return onLaunch(request,response)
+    response.clearSession();
+    return onLaunch(request,response)
     }
 );
+
+
+ISDSbot.intent("AMAZON.HelpIntent", 
+  {},
+  function(request, response) {
+    speechOutput = "as the I.S.D.S assistant I can help students selecting a concentration. Furthermore, I have limited knowledge about the departments professors. You can also ask me for a random fact";
+    response.say(speechOutput).shouldEndSession(false);
+    response.reprompt(speechOutput).shouldEndSession(false);
+    }
+);
+
 
 //application functions
 
@@ -246,7 +254,7 @@ function generalInfo(request, response) {
   if (!infocat) {
     //var speechOutput = "You can ask me about students, professors, the business school, and the department";
     var speechOutput = "You can ask me for a random fact"
-    var repromptOutput = "Try asking me a random fact maybe";
+    var repromptOutput = "Try asking me a random fact";
     response.say(speechOutput).shouldEndSession(false);
     response.reprompt(repromptOutput).shouldEndSession(false);
   }
@@ -300,8 +308,8 @@ function courseAdvisor(consultHelp,request, response) {
 };
 
 function onLaunch(request, response) {
-    var speechOutput = "Hi there! I'm the the I.S.D.S assistant. I'm here to help you. What's your name? Say: my name is, followed by your name";
-    var repromptOutput = "Sorry, I didn't catch that. Say: my name is, followed by your name";
+    var speechOutput = "Hi there! I'm the the I.S.D.S assistant. I'm here to help you. What's your name?";
+    var repromptOutput = "Sorry, I didn't catch that. What's you're name?";
 
     response.say(speechOutput).shouldEndSession(false);
     response.reprompt(repromptOutput).shouldEndSession(false);
@@ -341,7 +349,7 @@ function determineCareerPath(request, response) {
   };
   if(ITscore.value == 0 && BIscore.value == 0) {
     var speechOutput = "Unfortunately you seem not to like anything about I.S.D.S. However, if you ....";
-    response.say(speechOutput)shouldEndSession(false);
+    response.say(speechOutput).shouldEndSession(false);
   }
   
 };
@@ -397,8 +405,7 @@ function queryKnowledgeBase(request, response) {
   if(queryResult.value == null) {
     var speechOutput = "sorry, I don't have an answer to that question"
     response.say(speechOutput).shouldEndSession(false);
-  }
-    
+  } 
 }
 
 //export the ISDSbot module
