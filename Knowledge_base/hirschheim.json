@@ -1,0 +1,28 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Rudolf Hirschheim",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "London School of Economics",
+       "sameAs": ""
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "University of Toronto",
+       "sameAs": ""
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "State University of New York College",
+       "sameAs": ""
+      }
+       ],
+      "startDate": "2003",
+      "jobTitle": "i.s.d.s. professor"
+  },
+  "description": "Dr. Hirschheim is an Ourso Family Distinguished Professor of Information Systems. He oversees the PhD program as the director of graduate studies, and is  Committee Chair of the Promotion and Tenure Committee here. He has previously been on numerous faculties on various continents of the world, and is on editorial boards of several prestigious journals. "
+}

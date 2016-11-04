@@ -1,0 +1,23 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Keri Larson",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "The University of Georgia",
+       "sameAs": ""
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "The University of Chicago",
+       "sameAs": ""
+      }
+       ],
+      "startDate": "2015",
+      "jobTitle": "Assistant Professor"
+  },
+  "description": "Dr. Larson is Assistant Professor of Information Systems, She teaches data management and BI and researches unstructured text analytics and responses to ICT innovation."
+}

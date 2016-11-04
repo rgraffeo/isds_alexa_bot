@@ -7,18 +7,18 @@ var ConsultHelp = require('./consultant_helper.js');
 var jsonfile = require('jsonfile')
 var jsonQuery = require('json-query')
 var entities = require('./knowledge_paths.js');
-
+var jd = require('jsdataframe');
 
 var facts = {
     students: [
       "Students pursuing a Bachelor's degree in I.S.D.S. can choose to concentrate in either Business Intelligence or Information Technology ",
-      "Did you know that there are currently _ students in the I.S.D.S. program?",
+      "Did you know that there are currently 150 students in the I.S.D.S. program?",
       "The Association of Information Technology Professionals is a great organization for I.S.D.S. students to get inolved in",
       "I.S.D.S. students that study abroad are highly competitive in the global market",
-      "_% of I.S.D.S. students have full time job offers within 6 months of graduation"],
+      "85 percent of I.S.D.S. students have full time job offers within 6 months of graduation"],
     professors: [
-      "Did you know that _ of the I.S.D.S. professors are alumni of L.S.U.?",
-      "The I.S.D.S. department has a diverse faculty from _ cities and _ different countries",
+      "Did you know that some of the I.S.D.S. professors are alumni of L.S.U.?",
+      "The I.S.D.S. department has a diverse faculty from 24 cities and 7 different countries",
       "The I.S.D.S. faculty have expertise in various domains like e-commerce, medical informatics, quantitative modeling, and more ",
       "Many of the faculty members in I.S.D.S. are published in magazines, academic journals, and textbooks "],
     department: [
@@ -32,6 +32,26 @@ var facts = {
       "The Business Education Complex has been home to the E.J. Ourso School of Business since 2012",
       "the B.E.C. is a 60 million dollar facility making it the largest public and private capital investment in the history of LSU"]    
 };    
+
+
+var concentrations = {
+  technology: [
+  "Technical Track",
+  "The Technical Track prepares you for a career in the IT department of large organizations. You will create software applications, manage databases and maintain the technology that makes a modern business run."
+  ],
+  consulting: [
+  "Managerial and Consulting Track",
+  "The Managerial tracks prepares you for a career in IT management or consulting. You will help organizations create value with technology and will remain at the forefront of IT innovation.",
+  ],
+  cybersecuriy: [
+  "Internal Audit and Cybersecurity Track",
+  "The Internal Audit and Cybersecurity Track prepares you for a career in security and risk management. You will help organizations understand and manage the increasing risks associated with IT espionage and cyberthreats."
+  ],
+  analytics: [
+  "Analytics Track",
+  "The analytics track prepares you for a career as a data scientist or analyst. You will help organizations extract value from the data they create and collect. The analysis of Big Data and data streams will be your focus."
+  ]
+};
 
 
 //on launch intent
@@ -78,8 +98,8 @@ ISDSbot.intent("sayName", {
     }
 
     if(prev_name) {
-      var speechOutput = "i already know your name " + prev_name + "!. if you want to start over the conversation just say start over, or restart"
-      var repromptOutput = "i already know your name " + prev_name + "!. if you want to start over the conversation just say start over, or restart"
+      var speechOutput = "i already know your name " + prev_name + "!. if you want to start over the conversation just say start over, or restart";
+      var repromptOutput = "i already know your name " + prev_name + "!. if you want to start over the conversation just say start over, or restart";
       response.say(speechOutput).shouldEndSession(false)
     }
     }
@@ -121,7 +141,8 @@ ISDSbot.intent("queryKnowledgeBase", {
     "ENTITY": "ENTITY"
   },
   "utterances": [
-  "who is {-|ENTITY}",
+  "who is {professor | doctor | dott | mister | miss |} {-|ENTITY}",
+  "tell me about {professor | doctor | dott | mister | miss |} {-|ENTITY}",
   "what is {the |} {-|ENTITY}",
   "what does the {-|ENTITY} {do |}"
   ]
@@ -320,38 +341,54 @@ function onLaunch(request, response) {
 });
 };
 
+var sum = function(arr) {
+  return arr.reduce(function(a, b){ return a + b; }, 0);
+};
 
 function determineCareerPath(request, response) {
   var jsonRequest = request.data
   var last_intent = request.session("LAST_INTENT")
   var consultHelperData = request.session("CONSULT_DATA")
 
-  var agg = aggregate(consultHelperData.consultant[0].steps, "category", "value", add);
-  
-  var ITscore = jsonQuery("[type=IT]val", {
-  data: agg
+  var weight = []
+ 
+  for (var i = 0; i < consultHelperData.consultant[0].steps.length; i++) {
+    if (consultHelperData.consultant[0].steps[i].value == true) {
+    weight[i] = consultHelperData.consultant[0].steps[i].weight
+    }
+  }
+ 
+  var tech = []
+  var con = []
+  var cyb = []
+  var bi = []
+
+  var test = weight.map(function(row, i) {
+    tech[i] = row[0]
+    con[i] = row[1]
+    cyb[i] = row[2]
+    bi[i] = row[3]
   });
 
-  var BIscore = jsonQuery("[type=BI]val", {
-  data: agg
-  });
-  
-  if(ITscore.value > 0 || BIscore.value > 0) {
-    if(ITscore.value > BIscore.value) {
-      response.say("great IT score").shouldEndSession(false)
-    };
-    if(BIscore.value > ITscore.value) {
-      response.say("great BI score").shouldEndSession(false)
-    };
-    if(BIscore.value == ITscore.value) {
-      response.say("equal").shouldEndSession(false)
-    };
+  var tech = sum(tech)
+  var con = sum(con)
+  var cyb = sum(cyb)
+  var bi = sum(bi)
+
+  var result = [tech,con,cyb,bi]
+  var result = jd.df([ result, ['technology', 'analytics', 'cybersecuriy', 'consulting']],['value','category']);
+  var result = result.sort('value');
+  var result =result.s(-1);
+  var result = result.toObjArray()[0];
+
+  if(result.value != 0) {
+    var speechOutput = "It looks like your interestest are a good match to the " + concentrations[result.category][0] + ".  " + concentrations[result.category][1]
+    response.say(speechOutput).shouldEndSession(false)
   };
-  if(ITscore.value == 0 && BIscore.value == 0) {
-    var speechOutput = "Unfortunately you seem not to like anything about I.S.D.S. However, if you ....";
-    response.say(speechOutput).shouldEndSession(false);
+  if(result.value == 0) {
+    speechOutput = "Unfortunately your interest are not a good match to the I.S.D.S concentrations. But I'm sure there's something you like out there, go for it!"
+    response.say(speechOutput).shouldEndSession(false)
   }
-  
 };
 
 

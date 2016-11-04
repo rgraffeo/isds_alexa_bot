@@ -1,0 +1,28 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Sonja Wiley",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": "University of Hawaii Manoa"
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": "Ouachita Baptist University"
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": "Seinan Gakuin University"
+      }
+       ],
+      "startDate": "2002",
+      "jobTitle": " associate Professor"
+  },
+  "description": "Dr. Wiley is involved in the Office of Diversity and Inclusion as a Faculty Advisor for the B.E.C. Her teaching and research interests include, Management of Information Systems, Systems Analysis and Design,Business Communications, and information and Technology Acceptance."
+}

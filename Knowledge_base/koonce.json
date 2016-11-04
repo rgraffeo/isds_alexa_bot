@@ -1,0 +1,18 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Kenneth L Koonce",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "L. Eotvos University",
+       "sameAs": ""
+      }
+       ],
+      "startDate": "1967",
+      "jobTitle": "i.s.d.s. professor"
+  },
+  "description": "professor Koonce works with and develops chief analytics strategy in the department of information systems and decision sciences."
+}

@@ -1,0 +1,18 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Peter Kelle",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "L. Eotvos University",
+       "sameAs": ""
+      }
+       ],
+      "startDate": "1988",
+      "jobTitle": "i.s.d.s. professor"
+  },
+  "description": " Peter Kelle is an Ourso Family Distinguished Professor of Business Analysis. Dr. Kelle teaches undergraduate and graduate courses that discuss operations and supply chain management, as well as the survey of operations research employing the stochastic method."
+}

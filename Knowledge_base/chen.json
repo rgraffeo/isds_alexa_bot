@@ -1,0 +1,18 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Ye-Sho Chen",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "Purdue University",
+       "sameAs": ""
+      }
+       ],
+      "startDate": "1985",
+      "jobTitle": "I.S.D.S Department Professor"
+  },
+  "description": "Dr. Chen is a Professor of Management Information Systems in the Department of Information Systems and Decision Sciences, E. J. Ourso College of Business, Louisiana State University."
+}

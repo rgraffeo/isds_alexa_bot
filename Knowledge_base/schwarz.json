@@ -1,0 +1,23 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Andrew H Schwarz ",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": "University of Houston"
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": " Florida Atlantic University"
+      }
+       ],
+      "startDate": "2003",
+      "jobTitle": "Professor"
+  },
+  "description": "Dr. Andrew Shwartz is an advisor to the Flores MBA Program and a Flores MBA Online Advisor. is currently involved in research aimed at investigating: IT acceptance and use, Information technology management issues, such as governance, firm boundary choice, and alignment, the implementation and diffusion of technology within organizations, and Future technology trends."
+}

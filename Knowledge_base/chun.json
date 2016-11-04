@@ -1,0 +1,18 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Young Chun",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "Krannert Graduate School of Management, Purdue University",
+       "sameAs": ""
+      }
+       ],
+      "startDate": "1992",
+      "jobTitle": "i.s.d.s. professor"
+  },
+  "description": "Young Chun currenlty serves as the Cherie H. Flores Endowed Chair of MBA Studies and Masters Advisor to the Department of Flores MBA Program. His current research interests are in statistical decision analysis, statistical quality control, and Bayesian analysis. "
+}

@@ -1,0 +1,33 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "James R. Van Scotter",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": "University of Florida"
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": "Troy State University"
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": "Air Force Institute of Technology"
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": "Barry University"
+      }
+       ],
+      "startDate": "2003",
+      "jobTitle": " associate Professor"
+  },
+  "description": "Van Scotter retired from the USAF at the rank of Lieutenant Colonel. Now he teaches various courses within the i.s.d.s. curriculum including statistics, web analytics, electronic commerce,and understanding behavior in organizations. "
+}

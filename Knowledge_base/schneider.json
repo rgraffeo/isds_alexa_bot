@@ -1,0 +1,23 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Helmut Schneider",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": "Free University of Berlin"
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": "Technical University of Darmstadt"
+      }
+       ],
+      "startDate": "1985",
+      "jobTitle": "Professor"
+  },
+  "description": "Dr. Schneider has been the chairman of the Information Systems and Decision Sciences Department since 1994. He is Executive Director of Statistical Analysis for the Highway Safety Research Group as well as Associate Dean for Research and Graduate Programs."
+}

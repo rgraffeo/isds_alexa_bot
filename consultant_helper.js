@@ -8,29 +8,37 @@ function ConsultHelp(obj) {
   	this.currentStep = 0;
   	this.consultant = [
   	{	
-  		init: "i'll ask you some information in order to suggest you the best course tailored for your skills" + ". Please answer saying yes, or no. lets start with the first one.",
+  		init: "i'll ask you four questions in order to suggest you the best concentration tailored to your skills" + ". Please answer saying yes, or no. lets start with the first one.",
   		steps: [
   		{
-  			value: null,
-        weight: [1,0.8,0.5,0],
-  			promt: "are you interested in programming or user interfaces design?",
+  			value: false,
+        weight: [1,0.7,0.5,0],
+  			promt: "are you excited about programming and writing software?",
         category: "IT",
   			help: "programming is a process that leads from an original formulation of a computing problem to executable computer programs"
   		},
   		{
-  		  value: null,
-        weight: [0.5,1,0.5,0.2],
-  			promt: "are you exited about IT innovation and its business applications?",
+  		  value: false,
+        weight: [0.8,1,0.5,0.2],
+  			promt: "are you excited about databases and data analysis",
+        
         category: "IT",
   			help: "do you like quantitave courses?"	
   		},
   		{
-  			value: null,
-        weight: [0,0.5,0,1],
-  			promt: "do you want to build business intelligence and analytical skills?",
+  			value: false,
+        weight: [0,0.5,0,1.3],
+  			promt: "are you excited about IT innovation and its business applications?",
         category: "BI",
   			help: "do you like  subjects?"
-  		}/*,
+  		},
+      {
+        value: false,
+        weight: [0,0,0.6,0],
+        promt: "are you interested in computer security and risk management?",
+        category: "BI",
+        help: "do you like  subjects?"
+      }/*,
       {
         value: null,
         promt: "are you interested in building database management systems or other sofware applications?",

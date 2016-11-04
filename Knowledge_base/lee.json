@@ -1,0 +1,23 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Person",
+   "name": "Melissa Lee",
+   "alumniOf": {
+     "@type": "OrganizationRole",
+     "alumniOf": [
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": ""
+      },
+      {
+       "@type": "CollegeOrUniversity",
+       "name": "",
+       "sameAs": ""
+      }
+       ],
+      "startDate": "2016",
+      "jobTitle": "Assistant Professor"
+  },
+  "description": "Melissa Lee is an assistant professor to the Department of Information Systems and Decision Sciences."
+}
