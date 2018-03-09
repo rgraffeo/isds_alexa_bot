@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "2001",
+   "name": "Statistical Methods and Models",
+  "description": "Advanced statistical methods and decision models including ANOVA and linear regression analysis; management science models such as utility functions, decision analysis, math programming, waiting line models and simulation."
+}
