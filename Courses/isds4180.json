@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "4180",
+   "name": "Business Analytics in Practice",
+  "description": "Contemporary problems encountered by the business analysis professional; emphasis on case analysis and use of business analysis skills and computer technology to solve business problems."
+}
