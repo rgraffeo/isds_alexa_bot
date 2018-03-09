@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "3075",
+   "name": "Internship in ISDS",
+  "description": "At least the equivalent of 144 hours per semester (3 credits) of learning experience in information systems under the general supervision of an ISDS faculty member and direct supervision of an information systems or decision sciences professional. Grading based on the faculty member’s evaluation, a written report by the professional supervisor and a written report by the student."
+}
