@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "2000",
+   "name": "Introduction to Business Statistics",
+  "description": "Statistical description and inference; descriptive statistics, sampling, basic probability theory; probability distributions, including normal and binomial; sampling distributions; inferential statistics including estimation, one- and two-sample hypothesis tests for means and chi-square test of independence."
+}
