@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "3107",
+   "name": "Beginning Programming",
+  "description": "Fundamentals of programming, program design, application development interfaces, debugging, testing and implementation."
+}
