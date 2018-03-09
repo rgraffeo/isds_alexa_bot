@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "4125",
+   "name": "Analysis and Design of Management Information Systems",
+  "description": "Design philosophies and techniques for the creation of information systems for management decision-making; conceptual design of actual information systems."
+}
