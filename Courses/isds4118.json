@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "4118",
+   "name": "Web Analytics",
+  "description": "Principles of web analytics; key performance indicators, benchmarks, A/B testing, personalized content, customer-centric website design, process flow analysis, usability, research design and statistical methods."
+}
