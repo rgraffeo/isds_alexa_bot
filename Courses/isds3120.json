@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "3120",
+   "name": "Management of the IT Function",
+  "description": "Issues in managing the Information Technology function, including the discussion of how technology has underpinned the “new Economy,” formulating an IT strategy, structuring and managing the IT function and emerging trends in IT."
+}
