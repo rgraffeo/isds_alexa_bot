@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "4113",
+   "name": "Project Management",
+  "description": "Topics on effectively managing information technology projects including: setting goals and objectives; work breakdown structures; project scheduling; managing project resources; evaluation and review; incentives and qualitative analysis; project accounting; extensive use of cases involving hands-on computer analyses with state-of-the-art project management software."
+}
