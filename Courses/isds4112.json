@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "4112",
+   "name": "Data Warehousing",
+  "description": "Data warehouses for business; topics include: business intelligence, data charts, multidimensional data, data mining, Web-enabled data warehouse, knowledge management."
+}
