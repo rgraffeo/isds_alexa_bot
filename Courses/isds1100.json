@@ -1,6 +1,7 @@
 {
   "@context": "http://schema.org",
   "@type": "Course",
+  "number": "1100",
    "name": "Introduction to Management Systems",
   "description": "Examine the expanding role of information technology in organizations including the development and use of information systems, hardware and software, the strategic impact of IT and the nature of the IT career; utilization of management information systems to improve managerial decision-making."
 }
