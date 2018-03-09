@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "3105",
+   "name": "Internet Development Tools",
+  "description": "Understanding of the Internet and its structure for use in business; technologies employed to develop Internet applications; development of business applications for the Internet."
+}
