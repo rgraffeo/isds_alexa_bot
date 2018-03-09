@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "3115",
+   "name": "Operations Management",
+  "description": "Principles and methodologies concerning productivity and quality of manufacturing and service organizations; production and service systems design; process and capacity design; total quality management; systems for just-in-time and purchasing management; inventory and materials management."
+}
