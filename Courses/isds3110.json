@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "3110",
+   "name": "Database Processing for Management",
+  "description": "Structure and function of managerial databases; design options and implementation of database management systems in the firm; laboratory practice includes use of a particular software system."
+}
