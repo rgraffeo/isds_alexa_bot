@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "3070",
+   "name": "Independent Reading and Research in ISDS",
+  "description": "Student is responsible for registering with a faculty member and selecting an area of reading and/or research."
+}
