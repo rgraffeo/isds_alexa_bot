@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "3200",
+   "name": "Advanced Programming",
+  "description": "Computer programming methods for business systems emphasizing contemporary programming environments and applications development interfaces."
+}
