@@ -1,6 +1,7 @@
 {
   "@context": "http://schema.org",
   "@type": "Course",
+  "number": "1102",
    "name": "Introduction to Management Systems for Business Majors",
   "description": "Role of information technology in business including the development and use of information systems, hardware and software, the strategic impact of IT for businesses and the nature of the IT career; utilization of management information systems to improve managerial decision-making."
 }
