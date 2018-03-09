@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "4123",
+   "name": "Computer and Networking Security",
+  "description": "Security management, corporate risk assessment, access control, authentication, transmission control protocol and Internet protocol packet content analysis, firewall hardware and software, types of encryption, cryptographic systems, application security issues and laws governing security and privacy."
+}
