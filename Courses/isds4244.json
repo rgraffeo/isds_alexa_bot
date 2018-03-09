@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "4244",
+   "name": "Information Systems Auditing",
+  "description": "The class will focus on the IS Audit process, IT Governance, Systems and Infrastructure Life Cycle Management, Service Delivery and Support, Protection of Information Assets and Business Continuity and Disaster Recovery. Emphasis will be placed on current practices and technologies used in today’s IT Audit environment."
+}
