@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "4141",
+   "name": "Introduction to Data Mining",
+  "description": "Fundamental methodology and techniques used in data mining, with particular emphasis on business applications; topics include market basket analysis, memory-based reasoning, cluster detection, link analysis, decision trees and rule induction, neural networks and genetic algorithms."
+}
