@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "4111",
+   "name": "Enterprise Systems",
+  "description": "Overview of key enterprise systems concepts from functional, technical and implementation perspective; emphasis on the process-centered organization and how integrated systems are designed to support cross-functional business; hands-on computer based exercises involving a hypothetical global company."
+}
