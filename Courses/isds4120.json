@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "4120",
+   "name": "Business Data Communications",
+  "description": "Telecommunications in business, including both voice and data communication, technical details (hardware, software, protocols, network configurations), network management and security issues."
+}
