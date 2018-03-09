@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Course",
+  "number": "3100",
+   "name": "Management in Information Resources",
+  "description": "Information as a resource; issues in information resource management; elements of information systems; development and maintenance of information systems; controlling information resources."
+}
